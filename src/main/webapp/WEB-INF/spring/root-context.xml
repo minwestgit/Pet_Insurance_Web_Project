@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
+
+
+	<!-- <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" 
+		/> <property name="url" value="jdbc:log4jdbc:mysql://127.0.0.1:3306/mess?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=UTC" 
+		/> -->
+
+	<!-- 객체명, property는 변수 setting. homecontrller에서 autowired으로 연결. -->
+	<!-- 기존 -->
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property> 
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:prod"></property> 
+		<property name="username" value="scott"></property> <property name="password" 
+		value="tiger"></property> </bean> -->
+
+	<!-- DataSource 선언 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+		<property name="url"
+			value="jdbc:log4jdbc:oracle:thin:@10.10.35.57:1521:prod">
+			<!-- value="jdbc:log4jdbc:oracle:thin:@localhost:1521:prod"></property> -->
+		</property>
+		<property name="username" value="scott"></property>
+		<property name="password" value="tiger"></property>
+	</bean>
+	<!-- DataSource 선언 -->
+
+	<!-- mybatis 등록 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:mappers/*.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory"
+			ref="sqlSessionFactory" />
+	</bean>
+	<!-- mybatis 등록 -->
+
+	<!-- faq -->
+	<bean id="faqDBHandle" class="com.dbinc.sanghwa.faq.FaqDBHandle">
+	</bean>
+
+	<bean id="pagi" class="com.dbinc.sanghwa.faq.Pagination">
+	</bean>
+	<!-- faq -->
+	<bean id="mapVO" class="com.dbinc.sanghwa.map.MapVO"></bean>
+	<bean id="mapDBHandle" class="com.dbinc.sanghwa.map.MapDBHandle"></bean>
+</beans>

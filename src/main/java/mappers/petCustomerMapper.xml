@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="petCustomerMapper">
+
+	<!-- 결과 : 0이면 아이디 중복 x 1이면 중복 검색 결과가 없으면 0으로 나옴 아래는 다 생략 동일하니 -->
+	<select id="userCheck" resultType="int"
+		parameterType="com.dbinc.sanghwa.petcustomer.PetCustomerVO">
+		<!-- cdata로 닫아서 문자열처리안되게 막음 -->
+		 <![CDATA[
+		select count(*) 
+		from pet_customer
+		where c_id = #{c_id}
+		]]>
+	</select>
+
+	<insert id="register"
+		parameterType="com.dbinc.sanghwa.petcustomer.PetCustomerImpl">
+		<![CDATA[
+		INSERT INTO pet_customer
+		(c_idx, c_id, c_pw, 
+		c_name, c_pid, c_gender, 
+		c_zipcode, c_road, c_detail,
+		c_phone, c_email, c_joindate)
+		VALUES 
+		(pet_customer_SEQUENCE.nextval, #{c_id}, #{c_pw},
+		#{c_name}, #{c_pid}, #{c_gender}, 
+		#{c_zipcode}, #{c_road}, #{c_detail}, 
+		#{c_phone}, #{c_email}, sysdate)
+		]]>
+	</insert>
+
+	<select id="login" resultType="int"
+		parameterType="com.dbinc.sanghwa.petcustomer.PetCustomerVO">
+        <![CDATA[
+		select count(*) 
+		from pet_customer
+		where c_id = #{c_id} and c_pw = #{c_pw}
+		]]>
+	</select>
+
+	<select id="userInfo"
+		resultType="com.dbinc.sanghwa.petcustomer.PetCustomerVO"
+		parameterType="com.dbinc.sanghwa.petcustomer.PetCustomerVO">
+		<![CDATA[
+		select *
+		from pet_customer
+		where c_id = #{c_id} and c_pw = #{c_pw}
+		]]>
+	</select>
+
+	<update id="userUpdate"
+		parameterType="com.dbinc.sanghwa.petcustomer.PetCustomerVO">
+		<![CDATA[
+		update pet_customer
+		set c_pw = #{c_pw}, 
+		c_name = #{c_name}, 
+		c_pid = #{c_pid}, 
+		c_gender = #{c_gender}, 
+		c_zipcode = #{c_zipcode}, 
+		c_road = #{c_road}, 
+		c_detail = #{c_detail}, 
+		c_phone = #{c_phone}, 
+		c_email = #{c_email}
+		where c_id = #{c_id}
+		]]>
+	</update>
+
+	<delete id="userDelete"
+		parameterType="com.dbinc.sanghwa.petcustomer.PetCustomerVO">
+	<![CDATA[
+		delete from pet_customer
+		where c_id = #{c_id}
+	]]>
+	</delete>
+
+	<select id="genderStat"
+		resultType="com.dbinc.sanghwa.petcustomer.GenderStatVO">
+	<![CDATA[
+		select c_gender as gender, round((count(c_gender)* 100 / (select count(*) from pet_customer)), 0) as pergender
+		from pet_customer
+		group by c_gender
+	]]>
+	</select>
+	
+</mapper>
