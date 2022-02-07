@@ -1,6 +1,7 @@
 # SanghwaCorp
  DB Inc Team Prioject</br>
  Project : 건강하개</br>
+ Period : 2020.02 ~ 2020.03</br>
 ### 🐶 🐱 펫 보험 홈페이지
  <img width="758" alt="스크린샷 2021-01-20 오후 9 23 48" src="https://user-images.githubusercontent.com/70561950/105174359-cb907a80-5b65-11eb-990f-6227648b0d01.png">
 </br>
